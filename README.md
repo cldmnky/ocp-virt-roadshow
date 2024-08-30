@@ -65,4 +65,14 @@ First we need a credential. This token *should be scoped* but for now let's just
       runner_pull_policy: IfNotPresent
     EOF
     ```
+6. Add an inventory:
 
+    ![alt text](image-1.png)
+
+    And add a new source from your project and set credentials and inventory file:
+
+    ![alt text](image-2.png)
+
+    The sync should be successful.
+
+    
