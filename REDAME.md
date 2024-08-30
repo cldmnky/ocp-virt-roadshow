@@ -33,35 +33,36 @@ First we need a credential. This token *should be scoped* but for now let's just
 
     Add a secret with the token:
 
-```bash
-oc apply -f - <<EOF
-apiVersion: v1
-kind: Secret
-metadata:
-  name: controller-access
-  type: Opaque
-stringData:
-  token: <generated-token>
-  host: https://<my-controller-host.example.com>
-EOF
-```
+    ```bash
+    oc apply -f - <<EOF
+    apiVersion: v1
+    kind: Secret
+    metadata:
+    name: controller-access
+    type: Opaque
+    stringData:
+    token: <generated-token>
+    host: https://<my-controller-host.example.com>
+    EOF
+    ```
 
 5. Create a new project:
 
-```bash
-oc apply -f - <<EOF
-apiVersion: tower.ansible.com/v1alpha1
-kind: AnsibleProject
-metadata:
-  name: git
-spec:
-  repo: https://github.com/cldmnky/ocp-virt-roadshow
-  branch: master
-  name: ocp-virt
-  scm_type: git
-  organization: Default
-  description: 'OCP Virt Lab' 
-  connection_secret: controller-access
-  runner_pull_policy: IfNotPresent
-EOF
-```
+    ```bash
+    oc apply -f - <<EOF
+    apiVersion: tower.ansible.com/v1alpha1
+    kind: AnsibleProject
+    metadata:
+    name: git
+    spec:
+    repo: https://github.com/cldmnky/ocp-virt-roadshow
+    branch: main
+    name: ocp-virt
+    scm_type: git
+    organization: Default
+    description: 'OCP Virt Lab' 
+    connection_secret: controller-access
+    runner_pull_policy: IfNotPresent
+    EOF
+    ```
+
