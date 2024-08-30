@@ -4,5 +4,5 @@ collections:
     src: https://galaxy.ansible.com
   - name: kubernetes.core
     src: https://galaxy.ansible.com
-  - name: Prometheus.Prometheus
+  - name: prometheus.prometheus
     src: https://galaxy.ansible.com
