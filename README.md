@@ -12,7 +12,7 @@ Fork this repo first!
 3. Get the login for the controller: `oc extract -n ansible-automation-platform secret/controller-admin-password --to -`
 4. Login to the controller, request a trial subscription.
 
-### Setting up a dynamic Kubevirt Inventory in the AAP Controller
+### Setting up a project and a dynamic Kubevirt Inventory in the AAP Controller
 
 First we need a credential. This token *should be scoped* but for now let's just add a cluster-admin scoped token.
 
@@ -75,4 +75,16 @@ First we need a credential. This token *should be scoped* but for now let's just
 
     The sync should be successful.
 
-    
+### Connecting to vm's in the cluster
+
+* Create a new project; `vms`.
+* Add a default public SSH key for that project in Virtualization/Settings/User
+* Add the private key to your credentials, the username should (most probably be `cloud-user`)
+* Add a Template and select the `ping`playbook from your project.
+* Run it!
+
+### Observability
+
+Now that we can run ansible on the VM, lets start monitoring them!
+
+We will install the excellent `node-exporter` on the VM, and add a service so we can deploy a service monitor and scrape the VM.
