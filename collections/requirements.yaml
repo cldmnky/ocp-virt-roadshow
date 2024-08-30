@@ -1,8 +1,4 @@
 ---
 collections:
-  - name: community.general
-    src: https://galaxy.ansible.com
-  - name: kubernetes.core
-    src: https://galaxy.ansible.com
   - name: prometheus.prometheus
     src: https://galaxy.ansible.com
