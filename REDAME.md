@@ -38,11 +38,11 @@ First we need a credential. This token *should be scoped* but for now let's just
     apiVersion: v1
     kind: Secret
     metadata:
-    name: controller-access
+      name: controller-access
     type: Opaque
     stringData:
-    token: <generated-token>
-    host: https://<my-controller-host.example.com>
+      token: <generated-token>
+      host: https://<my-controller-host.example.com>
     EOF
     ```
 
@@ -53,16 +53,16 @@ First we need a credential. This token *should be scoped* but for now let's just
     apiVersion: tower.ansible.com/v1alpha1
     kind: AnsibleProject
     metadata:
-    name: git
+      name: ocp-virt
     spec:
-    repo: https://github.com/cldmnky/ocp-virt-roadshow
-    branch: main
-    name: ocp-virt
-    scm_type: git
-    organization: Default
-    description: 'OCP Virt Lab' 
-    connection_secret: controller-access
-    runner_pull_policy: IfNotPresent
+      repo: https://github.com/cldmnky/ocp-virt-roadshow
+      branch: main
+      name: ocp-virt
+      scm_type: git
+      organization: Default
+      description: 'OCP Virt Lab' 
+      connection_secret: controller-access
+      runner_pull_policy: IfNotPresent
     EOF
     ```
 
