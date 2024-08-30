@@ -1,4 +1,4 @@
 plugin: redhat.openshift_virtualization.kubevirt
 host: https://kubernetes.default.svc
-validate_certs: false
+validate_certs: true
 create_groups: true
