@@ -88,3 +88,86 @@ First we need a credential. This token *should be scoped* but for now let's just
 Now that we can run ansible on the VM, lets start monitoring them!
 
 We will install the excellent `node-exporter` on the VM, and add a service so we can deploy a service monitor and scrape the VM.
+
+* Create a `Job Template` for the `ansible/playbooks/node-exporter.yaml` playbook in the forked repo.
+  * Using the Controller UI or declarative by applying a `JobTemplate`:
+
+    ```yaml
+    apiVersion: tower.ansible.com/v1alpha1
+    kind: JobTemplate
+    metadata:
+      name: install-node-exporter
+    spec:
+      connection_secret: controller-access
+      name: InstallNodeExporter
+      project: ocp-virt
+      playbook: ansible/playbooks/node-exporter.yaml
+      inventory: ocp-virt
+    ```
+  
+  *note:* You need to add the correct credentials to the Job Template if you created it using the declarative approach.
+
+* Setup and install `virtctl` so you can ssh to a machine.
+  * Verify that the `node_exporter` is installed on the VM.
+
+* Let's expose the `node_exporter` as a service:
+
+  ```bash
+    $ oc project <project/namespace of the vm>
+    $ oc get vmi
+    NAME                      AGE   PHASE     IP             NODENAME           READY
+    rhel9-teal-crocodile-53   84m   Running   10.128.0.106   borg.blahonga.me   True
+    $ virtctl expose vmi rhel9-teal-crocodile-53 --port 9100 --target-port 9100 --name teal-crocodile-node-exporter --port-name=metrics
+    $ oc get svc
+    NAME                           TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+    teal-crocodile-node-exporter   ClusterIP   172.30.101.177   <none>        9100/TCP   5m9s
+    $ oc port-forward pods/virt-launcher-rhel9-teal-crocodile-53-gfwqm 9100:9100
+    $ curl localhost:9100/metrics
+  ```
+
+  * We have now exposed the the `node_exporter` as a service on the VM.
+    * Label the service so we can create a generic `ServiceMonitor`:
+      `oc label svc teal-crocodile-node-exporter app=node-exporter`
+
+  * Enable user monitoring in the cluster:
+    * Edit the cluster-monitoring-config ConfigMap object (or create it if it's not there):
+
+    ```bash
+    oc -n openshift-monitoring edit configmap cluster-monitoring-config
+    ```
+
+    Enable user-monitoring by adding enableUserWorkload: true under data/config.yaml:
+
+    ```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: cluster-monitoring-config
+      namespace: openshift-monitoring
+    data:
+      config.yaml: |
+        enableUserWorkload: true
+    ```
+
+    If it does not exist create it: `oc apply -f manifests/cluster-monitoring-config.yaml`.
+
+* Create a `ServiceMonitor` to scrape the VM's metrics:
+
+    ```bash
+    oc apply -f - <<EOF
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      name: vms-node-exporter
+      namespace: vms 
+    spec:
+      endpoints:
+      - interval: 30s
+        port: metrics
+        path: /metrics
+        scheme: http
+      selector: 
+        matchLabels:
+          app: node-exporter
+    EOF
+    ``` 
