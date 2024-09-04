@@ -194,3 +194,34 @@ Hosted Control Planes allows us to run virtualized OpensHift Clusters on OpenShi
 > With hosted control planes for OpenShift Container Platform, you create control planes as pods on a hosting cluster without the need for dedicated virtual or physical machines for each control plane.
 > ![image](https://github.com/user-attachments/assets/d9ee0478-8227-47ae-9454-079e02bf5ce9)
 
+Hosted control planes are available in the multicluster engine operator. THe easiest way to get started is to install Advanced Cluster Management in the Operator Hub.
+
+* Install *Advanced Cluster Management* and create a `multiclusterhub`custom resource.
+
+* You will need a pull secret, so go to https://console.redhat.com and get a pull secret.
+
+* Add the pullsecret to a file on the bastion host.
+     `mkdir hcp && cd hcp && vi pull-secret.json`
+
+* Download the HCP binary from your cluster:
+  ```bash
+  curl -O https://hcp-cli-download-multicluster-engine.apps.p79w8.dynamic.redhatworkshops.io/linux/amd64/hcp.tar.gz && tar zxf hcp.tar.gz
+  ```
+
+* Patch the ingress contorller to allow wildcards: `oc patch ingresscontroller -n openshift-ingress-operator default --type=json -p '[{ "op": "add", "path": "/spec/routeAdmission", "value": {wildcardPolicy: "WildcardsAllowed"}}]'`
+
+* Install a cluster:
+  ```bash
+  export CLUSTER_NAME=hosted01
+  export PULL_SECRET_PATH=./pull-secret.json
+  export OCP_VERSION=quay.io/openshift-release-dev/ocp-release:4.16.10-multi
+  hcp create cluster kubevirt \
+    --name ${CLUSTER_NAME} \
+    --pull-secret ${PULL_SECRET_PATH}  \
+    --node-pool-replicas 3 \
+    --cores 4 \
+    --memory 16Gi \
+    --auto-repair \
+    --root-volume-size 50 \
+    --release-image ${OCP_VERSION}"
+
