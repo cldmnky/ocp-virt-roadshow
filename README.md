@@ -223,5 +223,5 @@ Hosted control planes are available in the multicluster engine operator. THe eas
     --memory 16Gi \
     --auto-repair \
     --root-volume-size 50 \
-    --release-image ${OCP_VERSION}"
+    --release-image ${OCP_VERSION}
 
