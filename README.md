@@ -220,7 +220,7 @@ Hosted control planes are available in the multicluster engine operator. THe eas
     --pull-secret ${PULL_SECRET_PATH}  \
     --node-pool-replicas 3 \
     --cores 4 \
-    --memory 16Gi \
+    --memory 8Gi \
     --auto-repair \
     --root-volume-size 50 \
     --release-image ${OCP_VERSION}
