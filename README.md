@@ -215,7 +215,7 @@ Hosted control planes are available in the multicluster engine operator. THe eas
   export CLUSTER_NAME=hosted01
   export PULL_SECRET_PATH=./pull-secret.json
   export OCP_VERSION=quay.io/openshift-release-dev/ocp-release:4.16.10-multi
-  hcp create cluster kubevirt \
+  ./hcp create cluster kubevirt \
     --name ${CLUSTER_NAME} \
     --pull-secret ${PULL_SECRET_PATH}  \
     --node-pool-replicas 3 \
