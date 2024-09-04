@@ -5,6 +5,18 @@
 
 Fork this repo first!
 
+SSH to your `hypervisor.XXX.dynamic.redhatworkshops.io` as 
+`lab-user`.
+
+Then:
+
+```bash
+$ sudo -i
+$ ssh root@192.168.123.100
+```
+
+Clone your forked repo!
+
 ### Installing
 
 1. Install the AAP operator and add a controller: `oc apply -f manifests/aap-operator-install.yaml`
