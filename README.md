@@ -184,4 +184,13 @@ We will install the excellent `node-exporter` on the VM, and add a service so we
     EOF
     ```
 
-* Verify that you can see metrics from the VM by querying the metrics in the Console: `rate(node_disk_io_time_weighted_seconds_total{job="vms-node-exporter"}[5m])` 
+* Verify that you can see metrics from the VM by querying the metrics in the Console: `rate(node_disk_io_time_weighted_seconds_total{job="vms-node-exporter"}[5m])`
+
+## Hosted Control Planes
+
+Hosted Control Planes allows us to run virtualized OpensHift Clusters on OpenShift with containerized control planes.
+
+> [!TIP]
+> With hosted control planes for OpenShift Container Platform, you create control planes as pods on a hosting cluster without the need for dedicated virtual or physical machines for each control plane.
+> ![image](https://github.com/user-attachments/assets/d9ee0478-8227-47ae-9454-079e02bf5ce9)
+
