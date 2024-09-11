@@ -1,23 +1,19 @@
 # Welcome to the OpenShift Virtualization Roadshow extra exercises
 
-> [!Note]
+> [!IMPORTANT]
 > Since we are running on a shared cluster, skip the installation part
 
 ## AAP on OpenShift
 
 Fork this repo first!
 
-SSH to your `hypervisor.XXX.dynamic.redhatworkshops.io` as 
-`lab-user`.
-
-Then:
+Login to the cluster using oc/kubectl
 
 ```bash
-$ sudo -i
-$ ssh root@192.168.123.100
+$ oc login -u admin <api-address>
 ```
 
-Clone your forked repo!
+Clone your forked repo to your laptop!
 
 ### Installing
 
@@ -83,8 +79,8 @@ First we need a credential. This token *should be scoped* but for now let's just
     ```
 6. Add an inventory:
 
-    [!Note]
-       Use as suffix of `-user-x`
+    > [!Note]
+    >   Use as suffix of `-user-x`
 
     ![alt text](image-1.png)
 
