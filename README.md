@@ -1,5 +1,7 @@
 # Welcome to the OpenShift Virtualization Roadshow extra exercises
 
+> [!Note]
+> Since we are running on a shared cluster, skip the installation part
 
 ## AAP on OpenShift
 
@@ -50,11 +52,12 @@ First we need a credential. This token *should be scoped* but for now let's just
     apiVersion: v1
     kind: Secret
     metadata:
-      name: controller-access
+      name: controller-access-<user-x>
+      namespace: ansible-automation-platform
     type: Opaque
     stringData:
       token: <generated-token>
-      host: https://<my-controller-host.example.com>
+      host: https://<my-controller-host.example.com> # from "oc get routes..."
     EOF
     ```
 
@@ -65,19 +68,23 @@ First we need a credential. This token *should be scoped* but for now let's just
     apiVersion: tower.ansible.com/v1alpha1
     kind: AnsibleProject
     metadata:
-      name: ocp-virt
+      name: ocp-virt-<user-x>
+      namespace: ansible-automation-platform
     spec:
-      repo: https://github.com/cldmnky/ocp-virt-roadshow
+      repo: https://github.com/<your-fork>/ocp-virt-roadshow
       branch: main
       name: ocp-virt-<user-x>
       scm_type: git
       organization: Default
-      description: 'OCP Virt Lab' 
-      connection_secret: controller-access
+      description: 'OCP Virt Lab for <user-x>' 
+      connection_secret: controller-access-<user-x>
       runner_pull_policy: IfNotPresent
     EOF
     ```
 6. Add an inventory:
+
+    [!Note]
+       Use as suffix of `-user-x`
 
     ![alt text](image-1.png)
 
@@ -108,9 +115,9 @@ We will install the excellent `node-exporter` on the VM, and add a service so we
     apiVersion: tower.ansible.com/v1alpha1
     kind: JobTemplate
     metadata:
-      name: install-node-exporter
+      name: install-node-exporter-<user-x>
     spec:
-      connection_secret: controller-access
+      connection_secret: controller-access-<user-x>
       name: InstallNodeExporter
       project: ocp-virt-<user-x>
       playbook: ansible/playbooks/node-exporter.yaml
