@@ -69,7 +69,7 @@ First we need a credential. This token *should be scoped* but for now let's just
     spec:
       repo: https://github.com/cldmnky/ocp-virt-roadshow
       branch: main
-      name: ocp-virt
+      name: ocp-virt-<user-x>
       scm_type: git
       organization: Default
       description: 'OCP Virt Lab' 
@@ -89,7 +89,7 @@ First we need a credential. This token *should be scoped* but for now let's just
 
 ### Connecting to vm's in the cluster
 
-* Create a new project; `vms`.
+* Create a new openshift project; `vms-<user-x>`.
 * Add a default public SSH key for that project in Virtualization/Settings/User
 * Add the private key to your credentials, the username should (most probably be `cloud-user`)
 * Add a Template and select the `ping`playbook from your project.
@@ -112,7 +112,7 @@ We will install the excellent `node-exporter` on the VM, and add a service so we
     spec:
       connection_secret: controller-access
       name: InstallNodeExporter
-      project: ocp-virt
+      project: ocp-virt-<user-x>
       playbook: ansible/playbooks/node-exporter.yaml
       inventory: ocp-virt
     ```
