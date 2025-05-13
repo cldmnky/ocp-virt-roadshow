@@ -92,7 +92,7 @@ First we need a credential. This token *should be scoped* but for now let's just
 
 ### Connecting to vm's in the cluster
 
-* Create a new openshift project; `vms-<user-x>`.
+* Create a new openshift project; `virt-extra-user<XX>`. This should already exist...
 * Add a default public SSH key for that project in Virtualization/Settings/User
 * Add the private key to your credentials, the username should (most probably be `cloud-user`)
 * Add a Template and select the `ping`playbook from your project.
@@ -112,8 +112,9 @@ We will install the excellent `node-exporter` on the VM, and add a service so we
     kind: JobTemplate
     metadata:
       name: install-node-exporter-<user-x>
+      namespace: virt-extra-user<XX>
     spec:
-      connection_secret: controller-access-<user-x>
+      connection_secret: controller-access-user<XX>
       name: InstallNodeExporter
       project: ocp-virt-<user-x>
       playbook: ansible/playbooks/node-exporter.yaml
