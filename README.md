@@ -24,6 +24,7 @@ Clone your forked repo to your laptop!
 ### 2. Setting up a project and a dynamic Kubevirt Inventory in the AAP Controller
 
 First we need a credential. This token *should be scoped* but for now let's just add a cluster-admin scoped token.
+
 0. Add a new project: `oc new-project virt-extra-userXX`
 1. Add a ServiceAccount: `oc create sa controller-credential -n virt-extra-userXX`
 2. Add cluster-admin rights to the service account: `oc adm policy add-cluster-role-to-user cluster-admin -z controller-credential` 
