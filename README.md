@@ -190,6 +190,15 @@ We will install the excellent `node-exporter` on the VM, and add a service so we
 
 * Verify that you can see metrics from the VM by querying the metrics in the Console: `rate(node_disk_io_time_weighted_seconds_total{job="vms-node-exporter"}[5m])`
 
+### Setting up virtctl
+
+For mac:
+
+```bash
+brew tap jeffreywildman/homebrew-virt-manager
+brew install virt-manager virt-viewer
+```
+
 ## Hosted Control Planes
 
 Hosted Control Planes allows us to run virtualized OpensHift Clusters on OpenShift with containerized control planes.
