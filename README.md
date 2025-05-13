@@ -10,23 +10,22 @@ Fork this repo first!
 Login to the cluster using oc/kubectl
 
 ```bash
-$ oc login -u admin <api-address>
+$ oc login -u userXX <api-address>
 ```
 
 Clone your forked repo to your laptop!
 
-### Installing
+### 1. Setting up
 
-1. Install the AAP operator and add a controller: `oc apply -f manifests/aap-operator-install.yaml`
 2. Get the route for the controller: `oc get routes -n ansible-automation-platform controller`
-3. Get the login for the controller: `oc extract -n ansible-automation-platform secret/controller-admin-password --to -`
-4. Login to the controller, request a trial subscription.
+3. Get the login for the controller: `oc extract -n ansible-automation-platform secret/lmt-admin-password --to -`
+4. Login to the controller
 
-### Setting up a project and a dynamic Kubevirt Inventory in the AAP Controller
+### 2. Setting up a project and a dynamic Kubevirt Inventory in the AAP Controller
 
 First we need a credential. This token *should be scoped* but for now let's just add a cluster-admin scoped token.
-
-1. Add a ServiceAccount: `oc create sa controller-credential`
+0. Add a new project: `oc new-project virt-extra-userXX`
+1. Add a ServiceAccount: `oc create sa controller-credential -n virt-extra-userXX`
 2. Add cluster-admin rights to the service account: `oc adm policy add-cluster-role-to-user cluster-admin -z controller-credential` 
 3. Create a token for the SA: `oc create token controller-credential --duration=4294967296s` (hmm 136 years, 29 weeks, 3 days, 6 hours, 28 minutes, 16 seconds. :-0). Copy it and add it as a Credential in the controller:
 ![alt text](image.png) It's also possible to add the Credential using the a declarative approach. Apply a `kind: AnsibleCredential` to your cluster. See the example [here.](https://github.com/ansible/awx-resource-operator/blob/devel/config/samples/credentials/tower_v1alpha1_ansiblecredential-bearer.yaml).
@@ -49,7 +48,7 @@ First we need a credential. This token *should be scoped* but for now let's just
     kind: Secret
     metadata:
       name: controller-access-<user-x>
-      namespace: ansible-automation-platform
+      namespace: virt-extra-userXX
     type: Opaque
     stringData:
       token: <generated-token>
