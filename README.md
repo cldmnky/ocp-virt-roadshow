@@ -64,7 +64,7 @@ First we need a credential. This token *should be scoped* but for now let's just
     kind: AnsibleProject
     metadata:
       name: ocp-virt-<user-x>
-      namespace: ansible-automation-platform
+      namespace: virt-extra-userXX
     spec:
       repo: https://github.com/<your-fork>/ocp-virt-roadshow
       branch: main
